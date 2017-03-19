@@ -77,8 +77,11 @@ class GamaTest(unittest.TestCase):
         driver.find_element_by_name("Email").send_keys("test-gama2@test.com")
         driver.find_element_by_name("Password").send_keys("1234")
         driver.find_element_by_xpath("//button").click()
-        self.assertEqual(u"Восстановить", driver.find_element_by_link_text(u"Восстановить").text)
-        self.assertEqual(u"Неправильный пароль. Восстановить", driver.find_element_by_css_selector("div.status-error").text)
+        WebDriverWait(driver, 10).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR,'div.status-error'),u'Неправильный пароль. Восстановить'))
+
+        # self.assertEqual(u"Восстановить", driver.find_element_by_link_text(u"Восстановить").text)
+        # self.assertEqual(u"Неправильный пароль. Восстановить", driver.find_element_by_css_selector("div.status-error").text)
 
 #check "Неправильный логин"
     def test_gama6(self):
@@ -87,8 +90,8 @@ class GamaTest(unittest.TestCase):
         driver.find_element_by_name("Email").send_keys("test-gama1@test.co")
         driver.find_element_by_name("Password").send_keys("123")
         driver.find_element_by_xpath("//button").click()
-        self.assertEqual(u"Создать с этим паролем", driver.find_element_by_link_text(u"Создать с этим паролем").text)
-        self.assertEqual(u"Такого пользователя не существует. Создать с этим паролем", driver.find_element_by_css_selector("div.status-error").text)
+        WebDriverWait(driver, 10).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR,'div.status-error'),u'Такого пользователя не существует. Создать с этим паролем'))
 
 #check "Неправильный логин/пароль"
     def test_gama7(self):
@@ -97,28 +100,28 @@ class GamaTest(unittest.TestCase):
         driver.find_element_by_name("Email").send_keys("test-gama2@test.co")
         driver.find_element_by_name("Password").send_keys("1234")
         driver.find_element_by_xpath("//button").click()
-        self.assertEqual(u"Создать с этим паролем", driver.find_element_by_link_text(u"Создать с этим паролем").text)
-        self.assertEqual(u"Такого пользователя не существует. Создать с этим паролем", driver.find_element_by_css_selector("div.status-error").text)
+        WebDriverWait(driver, 10).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR,'div.status-error'),u'Такого пользователя не существует. Создать с этим паролем'))
 
  #check "Пробел в логине (до логина)"
     def test_gama8(self):
         driver = self.driver
         self.init()
-        driver.find_element_by_name("Email").send_keys("   test-gama2@test.com")
+        driver.find_element_by_name("Email").send_keys("   test-gama4@test.com")
         driver.find_element_by_name("Password").send_keys("123")
         driver.find_element_by_xpath("//button").click()
-        self.assertEqual(u"Создать с этим паролем", driver.find_element_by_link_text(u"Создать с этим паролем").text)
-        self.assertEqual(u"Такого пользователя не существует. Создать с этим паролем", driver.find_element_by_css_selector("div.status-error").text)
+        WebDriverWait(driver, 10).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR,'div.status-error'),u'Такого пользователя не существует. Создать с этим паролем'))
 
 #check "Пробел в логине (после логина)"
     def test_gama9(self):
         driver = self.driver
         self.init()
-        driver.find_element_by_name("Email").send_keys("test-gama2@test.com   ")
+        driver.find_element_by_name("Email").send_keys("test-gama4@test.com   ")
         driver.find_element_by_name("Password").send_keys("123")
         driver.find_element_by_xpath("//button").click()
-        self.assertEqual(u"Создать с этим паролем", driver.find_element_by_link_text(u"Создать с этим паролем").text)
-        self.assertEqual(u"Такого пользователя не существует. Создать с этим паролем", driver.find_element_by_css_selector("div.status-error").text)
+        WebDriverWait(driver, 10).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR,'div.status-error'),u'Такого пользователя не существует. Создать с этим паролем'))
 
 #check "Регистрозависимость"
     def test_gama10(self):
@@ -154,7 +157,7 @@ class GamaTest(unittest.TestCase):
         driver.find_element_by_link_text(u"Я не помню пароль").click()
         self.assertEqual(u"Составляем инструкцию…", driver.find_element_by_css_selector("div.status-message").text)
         try:
-            element = WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 10).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR,'div.status-message'),u'Инструкция по восстановлению отправлена'))
         except TimeoutException:
             print ('test_gama12 - TimeoutException')
